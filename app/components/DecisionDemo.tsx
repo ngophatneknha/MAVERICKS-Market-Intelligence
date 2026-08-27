@@ -3,10 +3,10 @@
 import { useState } from 'react';
 
 const steps = [
-  { id: 'signal', number: '01', label: 'Signal', title: 'Phát hiện biến động', description: 'Xác định SKU thay đổi giá từ 10%, ưu tiên theo mức độ và lượng bán.', metric: '-18.4%', metricLabel: 'PRICE CHANGE', badge: 'CRITICAL', note: 'Premium serum 30ml · VN' },
-  { id: 'match', number: '02', label: 'Match', title: 'Tìm đúng sản phẩm tương đương', description: 'Chấm điểm tên, từ khóa và pack/size; hiển thị bằng chứng để review.', metric: '86%', metricLabel: 'MATCH SCORE', badge: 'HIGH', note: '3 evidence layers passed' },
-  { id: 'simulate', number: '03', label: 'Simulate', title: 'Mô phỏng economics', description: 'Kết hợp COGS, phí sàn, voucher, shipping và target margin.', metric: '₫279K', metricLabel: 'MARGIN FLOOR', badge: 'GUARDED', note: '28% target margin protected' },
-  { id: 'decide', number: '04', label: 'Decide', title: 'Ra quyết định có guardrail', description: 'Chỉ match/undercut khi competitive target còn trên giá sàn.', metric: 'HOLD', metricLabel: 'RECOMMENDATION', badge: 'EXPLAINED', note: 'Không cần giảm thêm' },
+  { id: 'signal', number: '01', label: 'Detect', title: 'Phát hiện biến động', description: 'Xác định SKU thay đổi giá từ 10%, ưu tiên theo mức độ và monthly_sold snapshot.', metric: '-18.4%', metricLabel: 'PRICE CHANGE', badge: 'SNAPSHOT', note: 'Vietnam snack tracked set' },
+  { id: 'match', number: '02', label: 'Match', title: 'Xác nhận SKU tương đương', description: 'Chấm điểm taxonomy, tên, từ khóa và pack/size; Category Manager duyệt trước khi đi tiếp.', metric: '86%', metricLabel: 'MATCH SCORE', badge: 'HUMAN REVIEW', note: 'Evidence attached · approval required' },
+  { id: 'simulate', number: '03', label: 'Guardrail', title: 'Tính effective price & economics', description: 'Áp voucher đối thủ và kiểm tra COGS, phí sàn, return, ads, campaign spend cùng target margin.', metric: '₫48K', metricLabel: 'MARGIN FLOOR', badge: 'GUARDED', note: 'Assumptions are visible' },
+  { id: 'decide', number: '04', label: 'Recommend', title: 'Đề xuất hành động có lý do', description: 'Decision tree ưu tiên NO ACTION, chỉ match khi gap đủ lớn và target còn trên margin floor.', metric: 'NO ACTION', metricLabel: 'RECOMMENDATION', badge: 'EXPLAINED', note: 'Không cần giảm thêm · human owned' },
 ];
 
 export default function DecisionDemo() {
@@ -35,8 +35,8 @@ export default function DecisionDemo() {
         </div>
         <div className="demo-log">
           <span>DECISION LOG</span>
-          <p><i /> Input validated</p><p><i /> Rule engine computed</p><p><i /> Evidence attached</p>
-          <small>Every output is traceable</small>
+          <p><i /> Input validated</p><p><i /> Evidence attached</p><p><i /> Human approval recorded</p>
+          <small>Every output is traceable · no auto-execution</small>
         </div>
       </div>
     </div>

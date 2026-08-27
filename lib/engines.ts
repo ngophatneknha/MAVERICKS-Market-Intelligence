@@ -100,7 +100,7 @@ function scorePair(source: Product, candidate: Product, country: Country): Match
   if (!sourcePack.totalSize || !candidatePack.totalSize) warnings.push('Thiếu quy cách để xác nhận hoàn toàn');
   else if (sizeScore < .55) warnings.push('Chênh lệch khối lượng/dung tích đáng kể');
   if (textScore < .5) warnings.push('Độ giống tên sản phẩm còn thấp');
-  return { score, confidence: Math.round(score * 100), band: score >= .72 ? 'high' : score >= .56 ? 'review' : 'low', textScore: Math.round(textScore * 100), tokenScore: Math.round(token.score * 100), packScore: Math.round(packScore * 100), segment: sourceSegment, reasons, warnings, sourcePack, candidatePack };
+  return { score, confidence: Math.round(score * 100), band: score >= .75 ? 'high' : score >= .56 ? 'review' : 'low', textScore: Math.round(textScore * 100), tokenScore: Math.round(token.score * 100), packScore: Math.round(packScore * 100), segment: sourceSegment, reasons, warnings, sourcePack, candidatePack };
 }
 
 export function rankSnapshotMatches(products: Product[], options: { country: Country; sourceShopId: string; targetShopId?: string; segmentId?: string; limit?: number }) {
@@ -123,17 +123,70 @@ const clamp = (value: number, min: number, max: number) => Math.min(max, Math.ma
 export function simulatePricingLocally(input: PricingInput): PricingResult {
   const ourPrice = Math.max(0, Number(input.ourPrice) || 0); const competitorPrice = Math.max(0, Number(input.competitorPrice) || 0);
   const competitorChangePercent = clamp(Number(input.competitorChangePercent) || 0, -95, 500);
+  const competitorVoucherPercent = clamp(Number(input.competitorVoucherPercent) || 0, 0, 80);
   const targetMarginPercent = clamp(Number(input.targetMarginPercent) || 15, 0, 80); const cogsPercent = clamp(Number(input.cogsPercent) || 55, 0, 100);
   const platformFeePercent = clamp(Number(input.platformFeePercent) || 0, 0, 40); const voucherPercent = clamp(Number(input.voucherPercent) || 0, 0, 40);
-  const shippingPercent = clamp(Number(input.shippingPercent) || 0, 0, 30); const undercutPercent = clamp(Number(input.undercutPercent) || 2, 0, 20);
-  const unitCost = ourPrice * cogsPercent / 100; const deductionRate = (targetMarginPercent + platformFeePercent + voucherPercent + shippingPercent) / 100;
-  if (!ourPrice || !competitorPrice || deductionRate >= .95) throw new Error('Dữ liệu giá hoặc tỷ lệ khấu trừ chưa hợp lệ.');
-  const competitorAfter = competitorPrice * (1 + competitorChangePercent / 100); const marginFloor = unitCost / (1 - deductionRate);
-  const competitiveTarget = competitorAfter * (1 - undercutPercent / 100); const currentMarginPercent = ((ourPrice * (1 - (platformFeePercent + voucherPercent + shippingPercent) / 100) - unitCost) / ourPrice) * 100;
-  let action = 'HOLD'; let recommendedPrice = ourPrice; let headline = 'Giữ giá hiện tại'; let rationale = 'Giá hiện tại đã cạnh tranh và vẫn nằm trên margin floor.';
-  if (ourPrice < marginFloor) { action = 'MARGIN_RISK'; recommendedPrice = marginFloor; headline = 'Khôi phục biên lợi nhuận'; rationale = 'Giá hiện tại đang thấp hơn margin floor; không nên giảm thêm.'; }
-  else if (ourPrice > competitiveTarget && competitiveTarget >= marginFloor) { action = 'MATCH_UNDERCUT'; recommendedPrice = competitiveTarget; headline = 'Có thể match/undercut nhẹ'; rationale = 'Mức giá cạnh tranh vẫn cao hơn margin floor sau khi tính các khoản khấu trừ.'; }
-  else if (competitiveTarget < marginFloor) { action = 'DEFEND_MARGIN'; recommendedPrice = Math.max(ourPrice, marginFloor); headline = 'Không chạy theo giá đối thủ'; rationale = 'Giá cần thiết để undercut đã xuống dưới margin floor; nên cạnh tranh bằng bundle, voucher có điều kiện, rating hoặc giao hàng.'; }
-  else if (ourPrice <= competitiveTarget) { headline = 'Không cần giảm giá'; rationale = 'Giá hiện tại đã thấp hơn mục tiêu cạnh tranh; giảm thêm chỉ làm mất margin.'; }
-  return { action, headline, rationale, unitCost: Math.round(unitCost), competitorAfter: Math.round(competitorAfter), competitiveTarget: Math.round(competitiveTarget), marginFloor: Math.round(marginFloor), recommendedPrice: Math.round(recommendedPrice), currentMarginPercent: Number(currentMarginPercent.toFixed(1)), currentPriceGapPercent: Number(((ourPrice / competitorAfter - 1) * 100).toFixed(1)), assumptions: [`COGS assumed at ${cogsPercent}% of current price`] };
+  const shippingPercent = clamp(Number(input.shippingPercent) || 0, 0, 30); const returnRatePercent = clamp(Number(input.returnRatePercent) || 0, 0, 30);
+  const adsSpendPercent = clamp(Number(input.adsSpendPercent) || 0, 0, 40); const campaignSpendPercent = clamp(Number(input.campaignSpendPercent) || 0, 0, 40);
+  const packagingCost = Math.max(0, Number(input.packagingCost) || 0); const undercutPercent = clamp(Number(input.undercutPercent) || 0, 0, 20);
+  const gapThresholdPercent = clamp(Number(input.gapThresholdPercent) || 12, 0, 50); const skuRole = input.skuRole || 'core';
+  const commercialRate = (platformFeePercent + voucherPercent + shippingPercent + returnRatePercent + adsSpendPercent + campaignSpendPercent) / 100;
+  const deductionRate = commercialRate + targetMarginPercent / 100;
+  const unitCost = ourPrice * cogsPercent / 100;
+  if (!ourPrice || !competitorPrice || deductionRate >= .95) throw new Error('Dữ liệu giá hoặc tổng tỷ lệ khấu trừ chưa hợp lệ.');
+
+  const competitorAfter = competitorPrice * (1 + competitorChangePercent / 100);
+  const competitorEffective = competitorAfter * (1 - competitorVoucherPercent / 100);
+  const ourEffective = ourPrice * (1 - voucherPercent / 100);
+  const marginFloor = (unitCost + packagingCost) / (1 - deductionRate);
+  const roleAdjustment = skuRole === 'traffic' ? -undercutPercent : skuRole === 'margin' ? 5 : 0;
+  const competitiveTarget = competitorEffective * (1 + roleAdjustment / 100);
+  const currentMarginPercent = ((ourPrice * (1 - commercialRate) - unitCost - packagingCost) / ourPrice) * 100;
+  const currentPriceGapPercent = ((ourEffective / competitorEffective - 1) * 100);
+  const alreadyCompetitive = ourEffective <= competitorEffective;
+  const gapIsMaterial = currentPriceGapPercent > gapThresholdPercent;
+  const economicsAtRisk = ourPrice < marginFloor;
+  const targetIsSafe = competitiveTarget >= marginFloor;
+
+  let action = 'MONITOR'; let recommendedPrice = ourPrice; let headline = 'Theo dõi, chưa cần đổi giá';
+  let rationale = `Đối thủ rẻ hơn nhưng price gap chưa vượt ngưỡng ${gapThresholdPercent}%.`;
+  let reviewRequired = false;
+  if (alreadyCompetitive) {
+    action = 'NO_ACTION'; headline = economicsAtRisk ? 'Không giảm thêm; chuyển human review' : 'Không cần hành động trên trục giá';
+    rationale = economicsAtRisk
+      ? 'Giá hiệu dụng của ta đã cạnh tranh hơn đối thủ nhưng economics đang dưới margin floor. Hệ thống giữ nguyên giá và yêu cầu Category Manager xem xét, không tự động tăng giá.'
+      : 'Giá hiệu dụng của ta đã bằng hoặc thấp hơn đối thủ. Giảm thêm không cải thiện vị thế nhưng sẽ làm mất margin.';
+    reviewRequired = economicsAtRisk;
+  } else if (economicsAtRisk) {
+    action = 'HUMAN_REVIEW'; headline = 'Dừng phản ứng giá, cần người duyệt';
+    rationale = 'Giá hiện tại đã dưới margin floor. Hệ thống không tự động tăng hoặc giảm giá; Category Manager cần xem lại economics và vai trò SKU.';
+    reviewRequired = true;
+  } else if (!gapIsMaterial) {
+    action = 'MONITOR'; headline = 'Giữ giá và tiếp tục theo dõi';
+    rationale = `Price gap ${currentPriceGapPercent.toFixed(1)}% chưa vượt ngưỡng hành động ${gapThresholdPercent}%.`;
+  } else if (targetIsSafe) {
+    action = 'MATCH_UNDERCUT'; recommendedPrice = Math.min(ourPrice, competitiveTarget); headline = skuRole === 'traffic' ? 'Có thể undercut nhẹ' : skuRole === 'margin' ? 'Giữ premium trong policy band' : 'Có thể match có kiểm soát';
+    rationale = `Gap đã vượt ngưỡng và target theo vai trò ${skuRole} vẫn cao hơn margin floor.`;
+  } else {
+    action = 'DEFEND_MARGIN'; headline = 'Không chạy theo giá đối thủ';
+    rationale = 'Target cạnh tranh đã xuống dưới margin floor. Chuyển sang bundle, voucher có điều kiện, delivery hoặc rating.';
+  }
+
+  const decisionSteps: PricingResult['decisionSteps'] = [
+    { label: 'Giá ta đã cạnh tranh?', outcome: alreadyCompetitive ? 'Có → dừng giảm giá' : 'Chưa', status: alreadyCompetitive ? 'stopped' : 'passed' },
+    { label: `Gap vượt ${gapThresholdPercent}%?`, outcome: gapIsMaterial ? `Có · ${currentPriceGapPercent.toFixed(1)}%` : `Không · ${currentPriceGapPercent.toFixed(1)}%`, status: alreadyCompetitive ? 'pending' : gapIsMaterial ? 'passed' : 'stopped' },
+    { label: 'Còn margin buffer?', outcome: economicsAtRisk ? 'Economics đang dưới floor' : targetIsSafe ? 'Có' : 'Không', status: alreadyCompetitive || !gapIsMaterial ? 'pending' : targetIsSafe && !economicsAtRisk ? 'passed' : 'stopped' },
+  ];
+  const nonPriceLevers = ['Bundle theo nhu cầu', 'Voucher có điều kiện', 'Tăng tốc giao hàng', 'Củng cố rating & content'];
+  return {
+    action, headline, rationale, unitCost: Math.round(unitCost), competitorAfter: Math.round(competitorAfter), competitorEffective: Math.round(competitorEffective),
+    ourEffective: Math.round(ourEffective), competitiveTarget: Math.round(competitiveTarget), marginFloor: Math.round(marginFloor), recommendedPrice: Math.round(recommendedPrice),
+    currentMarginPercent: Number(currentMarginPercent.toFixed(1)), currentPriceGapPercent: Number(currentPriceGapPercent.toFixed(1)), reviewRequired,
+    actionOwner: 'Category Manager', nonPriceLevers, decisionSteps,
+    assumptions: [
+      `COGS đang được giả định bằng ${cogsPercent}% giá hiện tại`,
+      `Đối thủ được so theo giá sau voucher ${competitorVoucherPercent}%`,
+      `Vai trò SKU: ${skuRole}; chưa tự động thực thi`,
+    ],
+  };
 }

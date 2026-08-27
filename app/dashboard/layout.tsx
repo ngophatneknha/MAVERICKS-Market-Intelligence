@@ -4,10 +4,10 @@ import './dashboard-theme.css';
 
 export const metadata: Metadata = {
   title: 'Intelligence Control Room | Mavericks',
-  description: 'Theo dõi đối thủ, ghép SKU tương đương và mô phỏng quyết định giá có kiểm soát lợi nhuận.',
+  description: 'Luồng detect, match, human approval, pricing guardrail và recommend trên mẫu đối thủ Việt Nam.',
   openGraph: {
     title: 'Mavericks Intelligence Control Room',
-    description: 'Competitive intelligence biến dữ liệu Shopee thành tín hiệu, SKU match và quyết định giá có guardrail.',
+    description: 'Decision support biến snapshot Shopee Việt Nam thành cặp SKU đã xác nhận và hành động có guardrail.',
     images: [{ url: '/mavericks-dashboard-social.png', width: 1733, height: 909, alt: 'Mavericks Market Intelligence dashboard' }],
   },
 };

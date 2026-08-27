@@ -63,8 +63,5 @@ export const api = {
       return rankSnapshotMatches(data.products, { ...params, limit: 30 });
     }
   },
-  pricing: async (input: PricingInput): Promise<PricingResult> => {
-    try { return await liveRequest<PricingResult>('/api/pricing/simulate', { method: 'POST', body: JSON.stringify(input) }); }
-    catch { return simulatePricingLocally(input); }
-  },
+  pricing: async (input: PricingInput): Promise<PricingResult> => simulatePricingLocally(input),
 };

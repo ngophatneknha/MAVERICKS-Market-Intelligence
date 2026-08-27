@@ -16,7 +16,9 @@ Các CTA trên landing page dẫn thẳng tới dashboard cùng domain, không p
 - Quy trình tương tác `Signal → Match → Simulate → Decide`.
 - Giới thiệu Hybrid SKU Matching, Pricing Guardrail và Data Trust Layer.
 - Dashboard thật với Overview, Price Alerts, SKU Matching, Pricing Lab và Data Quality.
-- Snapshot dữ liệu Việt Nam và Indonesia được tính toán trực tiếp trên trình duyệt.
+- Trải nghiệm chính dùng snapshot mẫu đối thủ Việt Nam; phạm vi ngày, SKU và shop được đọc từ dữ liệu thay vì gán cứng.
+- Matcher có evidence review và bắt buộc Category Manager duyệt trước khi chuyển sang Pricing Lab.
+- Pricing Lab tính effective price, margin floor và decision tree `NO_ACTION / MONITOR / MATCH_UNDERCUT / DEFEND_MARGIN / HUMAN_REVIEW`.
 - Responsive cho desktop, tablet và mobile.
 
 ## Chạy trên máy

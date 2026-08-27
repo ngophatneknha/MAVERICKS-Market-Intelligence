@@ -43,9 +43,14 @@ export type MarketSnapshot = {
 };
 export type PricingInput = {
   ourPrice: number; competitorPrice: number; competitorChangePercent: number; cogsPercent: number; targetMarginPercent: number;
-  platformFeePercent: number; voucherPercent: number; shippingPercent: number; undercutPercent: number;
+  competitorVoucherPercent: number; platformFeePercent: number; voucherPercent: number; shippingPercent: number;
+  returnRatePercent: number; adsSpendPercent: number; campaignSpendPercent: number; packagingCost: number;
+  undercutPercent: number; gapThresholdPercent: number; skuRole: 'traffic' | 'core' | 'margin';
 };
 export type PricingResult = {
   action: string; headline: string; rationale: string; unitCost: number; competitorAfter: number; competitiveTarget: number;
-  marginFloor: number; recommendedPrice: number; currentMarginPercent: number; currentPriceGapPercent: number; assumptions: string[];
+  competitorEffective: number; ourEffective: number; marginFloor: number; recommendedPrice: number; currentMarginPercent: number;
+  currentPriceGapPercent: number; reviewRequired: boolean; actionOwner: string; nonPriceLevers: string[];
+  decisionSteps: Array<{ label: string; outcome: string; status: 'passed' | 'stopped' | 'pending' }>;
+  assumptions: string[];
 };

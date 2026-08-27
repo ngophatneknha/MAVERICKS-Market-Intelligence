@@ -1,6 +1,9 @@
 import DecisionDemo from './components/DecisionDemo';
+import vnSnapshot from '../public/data/market-vn.json';
 
 export default function Home() {
+  const overview = vnSnapshot.overview;
+  const cleanSkus = overview.trackedSkus - overview.qualityFlags;
   return (
     <main className="site-shell">
       <div className="ambient ambient-one" aria-hidden="true" />
@@ -23,15 +26,15 @@ export default function Home() {
 
       <section className="hero" id="top">
         <div className="hero-copy">
-          <div className="eyebrow"><span /> MARKET INTELLIGENCE FOR SEA COMMERCE</div>
+          <div className="eyebrow"><span /> DECISION SUPPORT FOR VIETNAM COMMERCE</div>
           <h1>
             Thấy tín hiệu.<br />
             Chọn đúng SKU.<br />
             <em>Giữ trọn biên lợi nhuận.</em>
           </h1>
           <p className="hero-lede">
-            Mavericks biến dữ liệu thị trường rời rạc thành quyết định rõ ràng — từ phát hiện
-            cơ hội, đối sánh sản phẩm đến mô phỏng mức giá nên hành động.
+            Mavericks giúp Category Manager đi từ tín hiệu giá đến cặp SKU đã xác nhận,
+            rồi chọn hành động phù hợp mà không phản ứng theo cảm tính.
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="/dashboard/">
@@ -40,7 +43,7 @@ export default function Home() {
             <a className="button button-secondary" href="#workflow">Xem cách hoạt động</a>
           </div>
           <p className="hero-proof">
-            <span className="live-dot" /> Dữ liệu thực từ Việt Nam &amp; Indonesia · cập nhật 20 ngày gần nhất
+            <span className="live-dot" /> Mẫu {overview.shops} đối thủ Việt Nam · {overview.dateRange.dates} ngày quan sát · PostgreSQL snapshot
           </p>
         </div>
 
@@ -49,8 +52,8 @@ export default function Home() {
           <div className="orbit orbit-b" aria-hidden="true" />
           <div className="signal-card floating-card">
             <span className="mini-label">TÍN HIỆU MỚI</span>
-            <strong>+18.4%</strong>
-            <small>Beauty · Việt Nam</small>
+            <strong>-18.4%</strong>
+            <small>Cookies &amp; Wafer · Việt Nam</small>
           </div>
 
           <div className="dashboard-frame">
@@ -65,17 +68,17 @@ export default function Home() {
               </aside>
               <div className="mock-content">
                 <div className="mock-heading">
-                  <div><small>MARKET OVERVIEW</small><strong>Intelligence Control Room</strong></div>
-                  <button type="button">VN⌄</button>
+                  <div><small>DECISION FLOW</small><strong>Category Manager Control Room</strong></div>
+                  <button type="button">VN</button>
                 </div>
                 <div className="metric-row">
-                  <div><span>Clean SKUs</span><strong>1,167</strong><small>↑ 12.8%</small></div>
-                  <div><span>Signals</span><strong>200</strong><small>Live now</small></div>
+                  <div><span>Clean SKUs</span><strong>{cleanSkus.toLocaleString('vi-VN')}</strong><small>{overview.classifiedCoverage}% classified</small></div>
+                  <div><span>Signals</span><strong>{overview.priceAlerts}</strong><small>Snapshot queue</small></div>
                   <div><span>Matching logic</span><strong>3 lớp</strong><small>Name · keyword · pack</small></div>
                 </div>
                 <div className="insight-grid">
                   <div className="chart-card">
-                    <div className="card-line"><span>Momentum by category</span><small>20D</small></div>
+                    <div className="card-line"><span>Tracked-set momentum</span><small>{overview.dateRange.dates}D</small></div>
                     <div className="chart-bars" aria-hidden="true">
                       <i style={{ height: '34%' }} /><i style={{ height: '48%' }} /><i style={{ height: '42%' }} />
                       <i style={{ height: '68%' }} /><i style={{ height: '61%' }} /><i style={{ height: '82%' }} />
@@ -83,10 +86,10 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="decision-card">
-                    <div className="card-line"><span>Next best action</span><small>AI</small></div>
-                    <b>Prioritize premium serum cluster</b>
-                    <p>Demand acceleration with protected margin.</p>
-                    <div className="decision-score"><span>Confidence</span><strong>92</strong></div>
+                    <div className="card-line"><span>Decision support</span><small>HITL</small></div>
+                    <b>Không cần giảm thêm</b>
+                    <p>Giá ta đã cạnh tranh; giữ margin và chờ người duyệt.</p>
+                    <div className="decision-score"><span>Action</span><strong>HOLD</strong></div>
                   </div>
                 </div>
               </div>
@@ -94,18 +97,18 @@ export default function Home() {
           </div>
 
           <div className="margin-card floating-card">
-            <span className="mini-label">TARGET MARGIN</span>
-            <strong>28.6%</strong>
-            <small>+3.1 pts protected</small>
+            <span className="mini-label">DECISION OWNER</span>
+            <strong>HUMAN</strong>
+            <small>Category Manager approval</small>
           </div>
         </div>
       </section>
 
       <section className="proof-strip" aria-label="Quy mô dữ liệu">
-        <div><strong>1,167</strong><span>SKU sạch</span></div>
-        <div><strong>2</strong><span>thị trường trọng điểm</span></div>
-        <div><strong>200+</strong><span>tín hiệu có thể hành động</span></div>
-        <div><strong>20 ngày</strong><span>cửa sổ xu hướng</span></div>
+        <div><strong>{cleanSkus.toLocaleString('vi-VN')}</strong><span>SKU sạch trong mẫu</span></div>
+        <div><strong>{overview.shops}</strong><span>gian hàng theo dõi</span></div>
+        <div><strong>{overview.priceAlerts}</strong><span>tín hiệu chờ đánh giá</span></div>
+        <div><strong>{overview.dateRange.dates} ngày</strong><span>cửa sổ quan sát</span></div>
       </section>
 
       <section className="story-section">
@@ -118,7 +121,7 @@ export default function Home() {
           <article className="old-way">
             <div className="compare-label">TRƯỚC MAVERICKS</div>
             <ul>
-              <li><span>01</span> Dữ liệu nằm ở nhiều bảng và nhiều thị trường</li>
+              <li><span>01</span> Dữ liệu nằm ở nhiều bảng và thiếu ngữ cảnh quyết định</li>
               <li><span>02</span> Không biết SKU nào thực sự tương đương</li>
               <li><span>03</span> Phản ứng giá theo cảm tính, dễ mất margin</li>
               <li><span>04</span> Phải rà lại chất lượng trước mỗi phân tích</li>
@@ -153,9 +156,9 @@ export default function Home() {
             <div className="bento-number">01</div>
             <div className="bento-copy"><span>PRIORITY QUEUE</span><h3>Biến động nào đáng để đội ngũ chú ý trước?</h3><p>Lọc tăng/giảm giá từ 10%, xếp mức độ ảnh hưởng và giữ nguyên bối cảnh SKU, shop, lượng bán.</p></div>
             <div className="signal-list" aria-hidden="true">
-              <div><i className="down">↓</i><span><b>Premium serum 30ml</b><small>Official Store · 2h ago</small></span><strong>-18%</strong></div>
-              <div><i className="up">↑</i><span><b>Gentle cleanser 150ml</b><small>Beauty Hub · 5h ago</small></span><strong>+14%</strong></div>
-              <div><i className="down">↓</i><span><b>SPF50 daily sunscreen</b><small>Brand Mall · 8h ago</small></span><strong>-11%</strong></div>
+              <div><i className="down">↓</i><span><b>Bánh quy bơ hộp thiếc</b><small>Official Store · snapshot mới nhất</small></span><strong>-18%</strong></div>
+              <div><i className="up">↑</i><span><b>Kẹo dẻo trái cây</b><small>Brand shop · snapshot mới nhất</small></span><strong>+14%</strong></div>
+              <div><i className="down">↓</i><span><b>Bánh gạo vị mặn</b><small>Official Store · snapshot mới nhất</small></span><strong>-11%</strong></div>
             </div>
           </article>
 
@@ -163,15 +166,15 @@ export default function Home() {
             <div className="bento-number">02</div>
             <div className="bento-copy"><span>HYBRID MATCHING</span><h3>Đây có thật sự là cùng một sản phẩm?</h3><p>Điểm tương đồng được tách thành tên, từ khóa và pack/size — luôn có bằng chứng để người dùng review.</p></div>
             <div className="match-visual" aria-hidden="true">
-              <div><small>SKU CỦA TA</small><b>Serum Niacinamide 30ml</b></div>
+              <div><small>SKU CỦA TA</small><b>Bánh quy bơ 300g</b></div>
               <span><strong>86</strong><small>MATCH</small></span>
-              <div><small>ĐỐI THỦ</small><b>Niacinamide Serum · 30 ml</b></div>
+              <div><small>ĐỐI THỦ</small><b>Butter cookies hộp 300 g</b></div>
             </div>
           </article>
 
           <article className="bento-card price-bento">
             <div className="bento-number">03</div>
-            <div className="bento-copy"><span>PRICING GUARDRAIL</span><h3>Giá cạnh tranh có đang phá vỡ lợi nhuận?</h3><p>Mô phỏng COGS, phí sàn, voucher, shipping và target margin trước khi đưa ra khuyến nghị.</p></div>
+            <div className="bento-copy"><span>PRICING GUARDRAIL</span><h3>Giá cạnh tranh có đang phá vỡ lợi nhuận?</h3><p>So giá sau voucher và kiểm tra COGS, phí sàn, shipping, return, ads, campaign spend và target margin.</p></div>
             <div className="price-track" aria-hidden="true"><span /><i /><b /><small>Margin floor</small><em>Recommended</em></div>
           </article>
 
@@ -190,7 +193,7 @@ export default function Home() {
         <div className="data-copy">
           <span className="section-code">02 / DATA FOUNDATION</span>
           <h2>Một nền dữ liệu đủ tin cậy để đội ngũ <em>dám hành động.</em></h2>
-          <p>Snapshot được xuất read-only từ PostgreSQL, chỉ chứa dữ liệu sản phẩm cần thiết. Trên phiên bản hosted, tìm kiếm, matching và pricing vẫn được tính trên dữ liệu này — không trả về kết quả mẫu gán cứng.</p>
+          <p>Snapshot được xuất read-only từ PostgreSQL, chỉ chứa dữ liệu sản phẩm cần thiết. Quy mô, cửa sổ ngày, tìm kiếm, matching và pricing đều được đọc hoặc tính từ snapshot — không dùng con số trình diễn gán cứng.</p>
           <div className="data-checks">
             <div><span>✓</span><p><b>Read-only snapshot</b><small>Không để lộ thông tin kết nối database</small></p></div>
             <div><span>✓</span><p><b>Computed on demand</b><small>Bộ lọc và engine chạy theo lựa chọn thật</small></p></div>
@@ -198,9 +201,9 @@ export default function Home() {
           </div>
         </div>
         <div className="market-cards">
-          <article><div><span>VN</span><small>VIỆT NAM</small></div><strong>664</strong><p>clean product records</p><i>Primary market</i></article>
-          <article><div><span>ID</span><small>INDONESIA</small></div><strong>503</strong><p>clean product records</p><i>Comparison market</i></article>
-          <div className="data-bridge"><span /> ONE DECISION MODEL <span /></div>
+          <article><div><span>VN</span><small>MẪU ĐỐI THỦ VIỆT NAM</small></div><strong>{cleanSkus.toLocaleString('vi-VN')}</strong><p>clean product records</p><i>Current MVP scope</i></article>
+          <article><div><span>{overview.dateRange.dates}D</span><small>OBSERVATION WINDOW</small></div><strong>{overview.shops}</strong><p>tracked shops</p><i>Not whole-market coverage</i></article>
+          <div className="data-bridge"><span /> ONE DECISION FLOW <span /></div>
         </div>
       </section>
 
@@ -217,7 +220,7 @@ export default function Home() {
         <div className="faq-intro"><span>FAQ</span><h2>Những điều mentor<br />có thể hỏi.</h2><p>Câu trả lời ngắn, tập trung vào cách MVP tạo giá trị và giữ tính minh bạch.</p></div>
         <div className="faq-list">
           <details open><summary>Mavericks khác một dashboard BI thông thường ở đâu?<span>+</span></summary><p>Dashboard BI dừng ở "điều gì đã xảy ra". Mavericks nối tín hiệu với matching, rồi đưa tín hiệu đó vào pricing guardrail để trả lời "nên làm gì tiếp theo và vì sao".</p></details>
-          <details><summary>Kết quả matching có phải AI quyết định hoàn toàn?<span>+</span></summary><p>Không. Engine chấm điểm dựa trên tên, từ khóa và pack/size, đồng thời hiển thị từng thành phần và cảnh báo. Các cặp trung bình hoặc thấp luôn cần human review.</p></details>
+          <details><summary>Kết quả matching có phải AI quyết định hoàn toàn?<span>+</span></summary><p>Không. MVP chấm điểm dựa trên taxonomy, tên, từ khóa và pack/size. Mọi cặp đều cần Category Manager duyệt; dưới 75% được route sang review tăng cường thay vì giả lập kết quả LLM.</p></details>
           <details><summary>MVP có phụ thuộc vào dữ liệu mẫu gán cứng không?<span>+</span></summary><p>Không. Dữ liệu sản phẩm được xuất thành snapshot sạch từ PostgreSQL. Search, filter, match và pricing đều tính toán trên snapshot theo lựa chọn của người dùng.</p></details>
           <details><summary>Hệ thống có tự động giảm giá theo đối thủ không?<span>+</span></summary><p>Không. Nếu mức giá cần để undercut thấp hơn margin floor, Mavericks khuyến nghị bảo vệ biên và chuyển sang bundle, voucher có điều kiện, rating hoặc giao hàng.</p></details>
         </div>
@@ -227,13 +230,13 @@ export default function Home() {
         <div className="cta-orbit" aria-hidden="true" />
         <span>MAVERICKS / MARKET INTELLIGENCE</span>
         <h2>Từ một biến động thị trường<br />đến một quyết định <em>có kiểm soát.</em></h2>
-        <p>Khám phá MVP đang chạy trên dữ liệu thật của hai thị trường Đông Nam Á.</p>
+        <p>Khám phá MVP đang chạy trên mẫu đối thủ Việt Nam và luôn giữ con người ở bước phê duyệt cuối.</p>
         <a className="button button-primary" href="/dashboard/">Mở Intelligence Control Room <b aria-hidden="true">↗</b></a>
       </section>
 
       <footer>
         <a className="brand" href="#top"><span className="brand-mark">M</span><span className="brand-word">MAVERICKS</span></a>
-        <p>Market Intelligence for smarter SEA commerce.</p>
+        <p>Decision support for smarter Vietnam commerce.</p>
         <div><a href="#product">Sản phẩm</a><a href="#workflow">Cách hoạt động</a><a href="/dashboard/">Dashboard ↗</a></div>
       </footer>
     </main>
