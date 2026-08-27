@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.URL || 'http://localhost:3000'),
-  title: 'Mavericks — Market Intelligence for SEA Commerce',
+  title: 'Mavericks Market Intelligence for SEA Commerce',
   description: 'Biến tín hiệu thị trường thành quyết định SKU, giá và biên lợi nhuận rõ ràng.',
   openGraph: {
     title: 'Mavericks — Thấy tín hiệu. Chọn đúng SKU.',
