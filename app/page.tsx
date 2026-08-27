@@ -236,21 +236,6 @@ export default function Home() {
         <p>Market Intelligence for smarter SEA commerce.</p>
         <div><a href="#product">Sản phẩm</a><a href="#workflow">Cách hoạt động</a><a href="/dashboard/">Dashboard ↗</a></div>
       </footer>
-
-      <style jsx>{`
-        .story-headline {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 20px;
-        }
-        .story-headline p,
-        .story-headline h2 {
-          flex: none;
-          width: 100%;
-          max-width: 100%;
-        }
-      `}</style>
     </main>
   );
 }
