@@ -112,7 +112,7 @@ export default function Home() {
         <div className="story-kicker"><span>01</span> VẤN ĐỀ THẬT</div>
         <div className="story-headline">
           <p>Không thiếu dữ liệu.</p>
-          <h2>Đội ngũ đang thiếu một đường thẳng từ <em>“có biến động”</em> đến <em>“nên làm gì tiếp theo”.</em></h2>
+          <h2>Đội ngũ đang thiếu một đường thẳng từ <em>"có biến động"</em> đến <em>"nên làm gì tiếp theo".</em></h2>
         </div>
         <div className="story-compare">
           <article className="old-way">
@@ -216,7 +216,7 @@ export default function Home() {
       <section className="faq-section">
         <div className="faq-intro"><span>FAQ</span><h2>Những điều mentor<br />có thể hỏi.</h2><p>Câu trả lời ngắn, tập trung vào cách MVP tạo giá trị và giữ tính minh bạch.</p></div>
         <div className="faq-list">
-          <details open><summary>Mavericks khác một dashboard BI thông thường ở đâu?<span>+</span></summary><p>Dashboard BI dừng ở “điều gì đã xảy ra”. Mavericks nối tín hiệu với matching, rồi đưa tín hiệu đó vào pricing guardrail để trả lời “nên làm gì tiếp theo và vì sao”.</p></details>
+          <details open><summary>Mavericks khác một dashboard BI thông thường ở đâu?<span>+</span></summary><p>Dashboard BI dừng ở "điều gì đã xảy ra". Mavericks nối tín hiệu với matching, rồi đưa tín hiệu đó vào pricing guardrail để trả lời "nên làm gì tiếp theo và vì sao".</p></details>
           <details><summary>Kết quả matching có phải AI quyết định hoàn toàn?<span>+</span></summary><p>Không. Engine chấm điểm dựa trên tên, từ khóa và pack/size, đồng thời hiển thị từng thành phần và cảnh báo. Các cặp trung bình hoặc thấp luôn cần human review.</p></details>
           <details><summary>MVP có phụ thuộc vào dữ liệu mẫu gán cứng không?<span>+</span></summary><p>Không. Dữ liệu sản phẩm được xuất thành snapshot sạch từ PostgreSQL. Search, filter, match và pricing đều tính toán trên snapshot theo lựa chọn của người dùng.</p></details>
           <details><summary>Hệ thống có tự động giảm giá theo đối thủ không?<span>+</span></summary><p>Không. Nếu mức giá cần để undercut thấp hơn margin floor, Mavericks khuyến nghị bảo vệ biên và chuyển sang bundle, voucher có điều kiện, rating hoặc giao hàng.</p></details>
@@ -236,6 +236,21 @@ export default function Home() {
         <p>Market Intelligence for smarter SEA commerce.</p>
         <div><a href="#product">Sản phẩm</a><a href="#workflow">Cách hoạt động</a><a href="/dashboard/">Dashboard ↗</a></div>
       </footer>
+
+      <style jsx>{`
+        .story-headline {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 20px;
+        }
+        .story-headline p,
+        .story-headline h2 {
+          flex: none;
+          width: 100%;
+          max-width: 100%;
+        }
+      `}</style>
     </main>
   );
 }
