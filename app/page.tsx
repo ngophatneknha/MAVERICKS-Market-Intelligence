@@ -111,6 +111,7 @@ export default function Home() {
       <section className="story-section">
         <div className="story-kicker"><span>01</span> VẤN ĐỀ THẬT</div>
         <div className="story-headline">
+          <p>Không thiếu dữ liệu.</p>
           <h2>Không thiếu dữ liệu. Đội ngũ đang thiếu một đường thẳng từ <em>“có biến động”</em> đến <em>“nên làm gì tiếp theo”.</em></h2>
         </div>
         <div className="story-compare">
