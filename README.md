@@ -2,13 +2,21 @@
 
 Website giới thiệu độc lập cho **Mavericks Market Intelligence** — nền tảng biến dữ liệu thị trường thành quyết định SKU, giá và biên lợi nhuận có guardrail. Dự án được xuất thành website tĩnh và triển khai hoàn toàn trên Netlify.
 
+## Cấu trúc trải nghiệm
+
+- `/` — website giới thiệu sản phẩm dành cho mentor và decision maker.
+- `/dashboard/` — Intelligence Control Room tương tác đầy đủ.
+
+Các CTA trên landing page dẫn thẳng tới dashboard cùng domain, không phụ thuộc website hoặc runtime bên ngoài.
+
 ## Nội dung chính
 
 - Product story dành cho mentor và decision maker.
 - Mô phỏng Intelligence Control Room có chiều sâu.
 - Quy trình tương tác `Signal → Match → Simulate → Decide`.
 - Giới thiệu Hybrid SKU Matching, Pricing Guardrail và Data Trust Layer.
-- Thông tin hai thị trường Việt Nam và Indonesia.
+- Dashboard thật với Overview, Price Alerts, SKU Matching, Pricing Lab và Data Quality.
+- Snapshot dữ liệu Việt Nam và Indonesia được tính toán trực tiếp trên trình duyệt.
 - Responsive cho desktop, tablet và mobile.
 
 ## Chạy trên máy
