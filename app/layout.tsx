@@ -10,11 +10,11 @@ export const metadata: Metadata = {
     description: 'Market Intelligence biến dữ liệu Việt Nam và Indonesia thành quyết định SKU, giá và margin có guardrail.',
     type: 'website',
     locale: 'vi_VN',
-    images: [{ url: '/og.png', width: 1728, height: 910, alt: 'Mavericks — Market Intelligence for SEA Commerce' }],
+    images: [{ url: '/og.png', width: 1728, height: 910, alt: 'Mavericks - Market Intelligence for SEA Commerce' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mavericks — Thấy tín hiệu. Chọn đúng SKU.',
+    title: 'Mavericks - Thấy tín hiệu. Chọn đúng SKU.',
     description: 'Market Intelligence cho thương mại điện tử Đông Nam Á.',
     images: ['/og.png'],
   },
