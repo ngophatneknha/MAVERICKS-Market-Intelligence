@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  distDir: '.next-netlify',
+  distDir: 'out',
   output: 'export',
   trailingSlash: true,
   images: {

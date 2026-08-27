@@ -1,7 +1,5 @@
 import DecisionDemo from './components/DecisionDemo';
 
-const appUrl = 'https://mavericks-market-intelligence.ngophat031.chatgpt.site/';
-
 export default function Home() {
   return (
     <main className="site-shell">
@@ -18,8 +16,8 @@ export default function Home() {
           <a href="#workflow">Cách hoạt động</a>
           <a href="#data">Dữ liệu</a>
         </div>
-        <a className="nav-cta" href={appUrl} target="_blank" rel="noreferrer">
-          Mở dashboard <span aria-hidden="true">↗</span>
+        <a className="nav-cta" href="#workflow">
+          Khám phá sản phẩm <span aria-hidden="true">↓</span>
         </a>
       </nav>
 
@@ -36,8 +34,8 @@ export default function Home() {
             cơ hội, đối sánh sản phẩm đến mô phỏng mức giá nên hành động.
           </p>
           <div className="hero-actions">
-            <a className="button button-primary" href={appUrl} target="_blank" rel="noreferrer">
-              Trải nghiệm sản phẩm <span aria-hidden="true">→</span>
+            <a className="button button-primary" href="#workflow">
+              Xem sản phẩm hoạt động <span aria-hidden="true">→</span>
             </a>
             <a className="button button-secondary" href="#workflow">Xem cách hoạt động</a>
           </div>
@@ -209,9 +207,9 @@ export default function Home() {
       <section className="role-section">
         <div className="section-heading centered"><span>BUILT FOR THE DECISION TEAM</span><h2>Mỗi vai trò thấy đúng thứ<br /><em>họ cần để tiến lên.</em></h2></div>
         <div className="role-grid">
-          <article><span>01</span><h3>Category &amp; Brand</h3><p>Nhìn nhanh ngành hàng, đối thủ và cụm SKU đang tạo áp lực.</p><a href={appUrl} target="_blank" rel="noreferrer">Mở market overview →</a></article>
-          <article><span>02</span><h3>Pricing &amp; Commercial</h3><p>Kiểm tra competitive target nhưng không vượt qua margin floor.</p><a href={appUrl} target="_blank" rel="noreferrer">Chạy pricing scenario →</a></article>
-          <article><span>03</span><h3>Data &amp; Analytics</h3><p>Review match evidence, quality flags và toàn bộ giả định mô hình.</p><a href={appUrl} target="_blank" rel="noreferrer">Kiểm tra trust layer →</a></article>
+          <article><span>01</span><h3>Category &amp; Brand</h3><p>Nhìn nhanh ngành hàng, đối thủ và cụm SKU đang tạo áp lực.</p><a href="#product">Xem market overview →</a></article>
+          <article><span>02</span><h3>Pricing &amp; Commercial</h3><p>Kiểm tra competitive target nhưng không vượt qua margin floor.</p><a href="#workflow">Xem pricing workflow →</a></article>
+          <article><span>03</span><h3>Data &amp; Analytics</h3><p>Review match evidence, quality flags và toàn bộ giả định mô hình.</p><a href="#data">Kiểm tra trust layer →</a></article>
         </div>
       </section>
 
@@ -230,13 +228,13 @@ export default function Home() {
         <span>MAVERICKS / MARKET INTELLIGENCE</span>
         <h2>Từ một biến động thị trường<br />đến một quyết định <em>có kiểm soát.</em></h2>
         <p>Khám phá MVP đang chạy trên dữ liệu thật của hai thị trường Đông Nam Á.</p>
-        <a className="button button-primary" href={appUrl} target="_blank" rel="noreferrer">Mở Intelligence Control Room <b aria-hidden="true">↗</b></a>
+        <a className="button button-primary" href="#workflow">Khám phá Intelligence Workflow <b aria-hidden="true">↑</b></a>
       </section>
 
       <footer>
         <a className="brand" href="#top"><span className="brand-mark">M</span><span className="brand-word">MAVERICKS</span></a>
         <p>Market Intelligence for smarter SEA commerce.</p>
-        <div><a href="#product">Sản phẩm</a><a href="#workflow">Cách hoạt động</a><a href={appUrl} target="_blank" rel="noreferrer">Dashboard ↗</a></div>
+        <div><a href="#product">Sản phẩm</a><a href="#workflow">Cách hoạt động</a><a href="#data">Dữ liệu</a></div>
       </footer>
     </main>
   );
