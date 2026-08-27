@@ -1,5 +1,5 @@
 {
-  "name": "sites-project",
+  "name": "mavericks-product-site",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "build:netlify": "next build",
     "start": "vinext start",
+    "dev:next": "next dev",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
   "dependencies": {
