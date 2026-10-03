@@ -1,0 +1,29 @@
+'use client';
+import { useMemo, useState } from 'react';
+import { ArrowRight, ArrowUpRight, Check, Play, ShieldCheck } from 'lucide-react';
+import { compareScenarios, defaultPlanning, demoSalesCsv, forecastSales, parseSalesCsv } from '@/lib/planning';
+
+const money = (n:number) => new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(n)+'đ';
+const count = (n:number) => new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(n);
+
+export default function DecisionShowcase({onPlan,onSignals}:{onPlan:()=>void;onSignals:()=>void}) {
+  const [selected,setSelected] = useState(2);
+  const [step,setStep] = useState(0);
+  const scenarios = useMemo(()=>compareScenarios(forecastSales(parseSalesCsv(demoSalesCsv()),'DEMO-SNACK-01'),defaultPlanning),[]);
+  const scenario = scenarios[selected];
+  const baseline = scenarios[2];
+  const profitDelta = scenario.operatingProfit-baseline.operatingProfit;
+  const low = Math.min(...scenarios.map(row=>row.operatingProfit));
+  const high = Math.max(...scenarios.map(row=>row.operatingProfit));
+  const coords = scenarios.map((row,i)=>({x:32+i*94,y:132-(row.operatingProfit-low)/Math.max(high-low,1)*96}));
+  return <section className="decision-showcase" aria-label="Bàn quyết định Mavericks">
+    <div className="showcase-story"><div className="showcase-edition"><span className="edition-mark">M</span><span>MAVERICKS<br/><b>DECISION DESK / 01</b></span></div><div className="showcase-copy"><span className="showcase-kicker">GIÁ → LỢI NHUẬN → VỐN</span><h2>Một mức giá.<br/><em>Ba hệ quả.</em></h2><p>Giá tốt không chỉ là giá thấp hơn đối thủ.<br/>Là phương án bán được hàng, giữ được lãi<br className="desktop-break"/> và có đủ tiền để thực hiện.</p></div><div className="showcase-ctas"><button onClick={()=>{setStep(0);setSelected(3);}}><Play size={14} fill="currentColor"/> Thử một quyết định <ArrowRight size={17}/></button><button className="showcase-secondary" onClick={onSignals}>Xem tín hiệu đối thủ <ArrowUpRight size={16}/></button></div><div className="showcase-footnote"><ShieldCheck size={17}/><span>Bạn quyết định. Mavericks làm rõ đánh đổi.<br/>Không tự đổi giá hoặc đặt hàng.</span></div></div>
+    <div className="showcase-simulator"><div className="simulator-top"><div><span className="simulator-dot"/> PHÒNG THỬ PHƯƠNG ÁN</div><span className="demo-stamp">DEMO · 8 TUẦN</span></div><div className="simulator-product"><span className="sku-object" aria-hidden="true"><i/><b>M</b><small>DEMO</small></span><div><h3>SKU hàng tiêu dùng minh họa</h3><p>42 ngày bán tổng hợp · không phải số liệu khách hàng</p></div></div><div className="showcase-steps" role="tablist" aria-label="Các bước thử quyết định">{['Chọn giá','Xem đánh đổi','Kiểm tra vốn'].map((label,i)=><button key={label} role="tab" aria-selected={step===i} onClick={()=>setStep(i)} className={step===i?'active':''}><span>{i+1}</span>{label}</button>)}</div>
+      <div className="simulator-stage" role="tabpanel">
+        <div className="simulator-price-heading"><span>{step===0?'THỬ GIÁ BÁN':step===1?'PHƯƠNG ÁN ĐANG SO SÁNH':'GIÁ GẮN VỚI KẾ HOẠCH VỐN'}</span><strong>{money(scenario.price)}</strong><small>{selected===2?'Giữ giá tham chiếu':`${selected>2?'+':''}${((scenario.price/defaultPlanning.currentPrice-1)*100).toFixed(0)}% so với giữ giá`}</small></div>
+        <div className="showcase-price-options" aria-label="Chọn mức giá demo">{scenarios.map((row,i)=><button key={row.price} aria-label={`Demo giá ${money(row.price)}`} aria-pressed={selected===i} onClick={()=>setSelected(i)} className={selected===i?'selected':''}>{i===2?'Giữ giá':`${i>2?'+':''}${((row.price/defaultPlanning.currentPrice-1)*100).toFixed(0)}%`}</button>)}</div>
+        {step===0 ? <div className="showcase-plot"><div><span>LỢI NHUẬN VẬN HÀNH MÔ PHỎNG</span><strong>{money(scenario.operatingProfit)}</strong></div><svg viewBox="0 0 440 170" role="img" aria-label="So sánh lợi nhuận vận hành của năm mức giá demo"><line x1="32" y1="142" x2="408" y2="142" stroke="#d9dfd4"/><path d={`M ${coords.map(p=>`${p.x},${p.y}`).join(' L ')}`} fill="none" stroke="#375f45" strokeWidth="3" strokeLinejoin="round"/>{coords.map((p,i)=><g key={i}><circle cx={p.x} cy={p.y} r={selected===i?7:4} fill={selected===i?'#e6a954':'#375f45'} stroke="#fff" strokeWidth="2"/><text x={p.x} y="164" textAnchor="middle" fill="#6b7568" fontSize="11">{count(scenarios[i].price)}</text></g>)}</svg><p>Chọn giá để thấy tác động. Đường nối chỉ để so sánh các mức đã thử, không phải đường nhu cầu đã được xác thực.</p></div> : step===1 ? <div className="showcase-tradeoffs"><div><span>Lợi nhuận so với giữ giá</span><strong>{profitDelta>=0?'+':''}{money(profitDelta)}</strong></div><div><span>Lượng bán mô phỏng</span><strong>{count(scenario.sold)} <small>đơn vị</small></strong></div><div><span>Biên đóng góp</span><strong>{scenario.margin.toFixed(1)}%</strong></div><p>Tăng giá có thể giảm lượng bán nhưng tăng lãi. Mức ảnh hưởng ở đây dùng độ nhạy giả định {defaultPlanning.elasticity}, chưa phải kết quả thử nghiệm thực.</p></div> : <div className="showcase-tradeoffs"><div><span>Lượng cần nhập</span><strong>{count(scenario.orderUnits)} <small>đơn vị</small></strong></div><div><span>Tiền cho lô nhập</span><strong>{money(scenario.orderCost)}</strong></div><div><span>Vốn cần bổ sung</span><strong>{money(scenario.additionalCapital)}</strong></div><p>Dùng tồn đầu kỳ {count(defaultPlanning.openingStock)} đơn vị và tiền có sẵn {money(defaultPlanning.openingCash)}. Đây là giả định demo, cần thay bằng số liệu brand.</p></div>}
+      </div><div className="simulator-bottom"><span><Check size={14}/>{scenario.feasible?'Đạt điều kiện demo':'Chưa đạt điều kiện demo'}</span><button onClick={()=>step<2?setStep(step+1):onPlan()}>{step<2?'Tiếp: '+(step===0?'xem đánh đổi':'kiểm tra vốn'):'Mở kế hoạch của brand'}<ArrowRight size={15}/></button></div>
+    </div>
+  </section>;
+}

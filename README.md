@@ -1,11 +1,13 @@
 # Mavericks — Market Intelligence Product Site
 
-Website giới thiệu độc lập cho **Mavericks Market Intelligence** — nền tảng biến dữ liệu thị trường thành quyết định SKU, giá và biên lợi nhuận có guardrail. Dự án được xuất thành website tĩnh và triển khai hoàn toàn trên Netlify.
+**Mavericks Profit & Market Intelligence** kết nối tín hiệu đối thủ với quyết định giá, lợi nhuận, tồn kho và kế hoạch vốn của brand. Landing page và ứng dụng dùng chung repository, xuất tĩnh và chạy trên Netlify.
 
 ## Cấu trúc trải nghiệm
 
 - `/` — website giới thiệu sản phẩm dành cho mentor và decision maker.
+- `/about/` — trang giới thiệu riêng với nhận diện đen–trắng–cam, chuyển động và bản demo sản phẩm; không thay thế app.
 - `/dashboard/` — Intelligence Control Room tương tác đầy đủ.
+- `/dashboard/#planning` — Profit & Capital Studio: nhập bán hàng CSV, so sánh giá và lập kế hoạch vốn 8 tuần.
 
 Các CTA trên landing page dẫn thẳng tới dashboard cùng domain, không phụ thuộc website hoặc runtime bên ngoài.
 
@@ -20,6 +22,21 @@ Các CTA trên landing page dẫn thẳng tới dashboard cùng domain, không p
 - Matcher có evidence review và bắt buộc Category Manager duyệt trước khi chuyển sang Pricing Lab.
 - Pricing Lab tính effective price, margin floor và decision tree `NO_ACTION / MONITOR / MATCH_UNDERCUT / DEFEND_MARGIN / HUMAN_REVIEW`.
 - Responsive cho desktop, tablet và mobile.
+- Profit & Capital Studio: baseline từ sales CSV thật của brand, backtest WAPE, elasticity nhập thủ công, giá vốn bằng tiền/đơn vị và guardrails theo vốn.
+- Dòng tiền theo ngày tổng hợp thành tuần: lead time, thời điểm trả NCC, settlement của sàn, mất nhu cầu khi thiếu hàng, tồn cuối kỳ và vốn thiếu.
+- Decision log có tên CM, giả định và kết quả ở thời điểm duyệt; lưu localStorage, có backup/restore, xuất JSON evidence và kế hoạch CSV.
+- Đối chiếu kết quả thực tế với bản duyệt đã đóng băng, theo kỳ 1–8 tuần; lưu nguồn dữ liệu và lịch sử cập nhật để tránh sửa ngược giả định.
+
+## Trải nghiệm Profit & Capital
+
+1. Mở `/dashboard/#planning` và chọn **Thử với dữ liệu minh họa**, hoặc import CSV của brand.
+2. CSV cần `date,sku,units,price,stockout`, một dòng/SKU/ngày. `price` là giá niêm yết trước voucher, `stockout` là 0 hoặc 1. Ghi cả ngày bán 0; cần ít nhất 14 ngày có hàng và chuỗi ngày liên tục.
+3. Nhập giá vốn thực, phí, policy margin, tồn kho, tiền sẵn có và kỳ thanh toán. Các giá trị ban đầu là giả định để thử sản phẩm.
+4. So sánh phương án giá và các blocker. Chọn phương án, xem dòng tiền, rồi nhập tên CM để ghi nhận bản duyệt.
+5. Dùng **Backup** trước khi chuyển máy. Dữ liệu không tự đồng bộ lên server. Khôi phục backup sẽ thay workspace trên trình duyệt hiện tại.
+6. Trong phần **Kết quả thực tế**, nhập kết quả theo cùng kỳ với bản duyệt và ghi nguồn đối chiếu. Đây là so sánh kế hoạch–thực tế, không phải bằng chứng tác động nhân quả của một quyết định giá.
+
+Mô hình hiện tại là baseline có thể giải thích, chưa phải AI học elasticity hoặc tối ưu toàn cục. Lợi nhuận vận hành mô phỏng chưa trừ thuế/chi phí tài chính. Không tự thực thi đổi giá hoặc đặt hàng. [PRODUCT_ROADMAP.md](PRODUCT_ROADMAP.md) ghi phạm vi hiện tại và các bước pilot tiếp theo.
 
 ## Chạy trên máy
 
@@ -43,7 +60,11 @@ Repository đã có sẵn `netlify.toml`, vì vậy không cần nhập thủ c�
    - Publish directory: `out`
 4. Chọn **Deploy site**.
 
-Đây là static export nên không cần database, server hoặc biến môi trường. Cấu hình `NETLIFY_NEXT_PLUGIN_SKIP=true` bảo đảm Netlify phát hành trực tiếp thư mục `out` và không chạy `@netlify/plugin-nextjs`.
+Đây là static export; mặc định dùng snapshot đối thủ và CSV của brand trên trình duyệt, không cần database/server. Cấu hình `NETLIFY_NEXT_PLUGIN_SKIP=true` phát hành trực tiếp thư mục `out`.
+
+Build production dùng Webpack để thống nhất với bản build đã kiểm thử. Sau khi deploy, truy cập `/about/` để xem trang giới thiệu và `/dashboard/` để mở ứng dụng, đều trên domain Netlify. Netlify cung cấp biến `URL` khi build để tạo đường dẫn chia sẻ đúng domain.
+
+Nếu có HTTPS API riêng, đặt `NEXT_PUBLIC_API_BASE_URL` trước lúc build và cấu hình CORS đúng origin trên backend. UI chỉ báo live khi toàn bộ market workspace tải được từ API; nếu không sẽ dùng toàn bộ snapshot. Matching giữ cùng nguồn với workspace đang mở. Credentials PostgreSQL chỉ được đặt ở backend, không đưa vào biến NEXT_PUBLIC.
 
 ## Các lệnh hữu ích
 
@@ -52,8 +73,11 @@ npm run dev            # Chạy local bằng Next.js
 npm run build          # Tạo static export trong thư mục out
 npm run build:netlify  # Alias của static build
 npm run lint           # Kiểm tra mã nguồn
+npm test               # Kiểm thử forecast, economics, inventory, cash và pricing regressions
 ```
 
 ## Bảo mật dữ liệu
 
-Repository chỉ chứa website giới thiệu. Không có mật khẩu PostgreSQL, chuỗi kết nối database hay dữ liệu bí mật. Website không phụ thuộc vào OpenAI Sites, ChatGPT hosting, server hoặc API riêng.
+CSV bán hàng và decision log lưu trên trình duyệt người dùng; không commit vào Git. Repository dùng snapshot thị trường, không chứa credentials PostgreSQL. Phiên bản static không phụ thuộc ChatGPT hosting. Để phục vụ đội nhóm cần backend có xác thực, tenant, phân quyền và audit log theo roadmap.
+
+Font Be Vietnam Pro được lưu tại `public/fonts/be-vietnam-pro`, kèm giấy phép SIL Open Font License trong `OFL.txt`.

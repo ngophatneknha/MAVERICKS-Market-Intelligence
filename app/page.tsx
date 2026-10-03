@@ -30,11 +30,11 @@ export default function Home() {
           <h1>
             Thấy tín hiệu.<br />
             Chọn đúng SKU.<br />
-            <em>Giữ trọn biên lợi nhuận.</em>
+            <em>Tăng trưởng có lợi nhuận.</em>
           </h1>
           <p className="hero-lede">
-            Mavericks giúp Category Manager đi từ tín hiệu giá đến cặp SKU đã xác nhận,
-            rồi chọn hành động phù hợp mà không phản ứng theo cảm tính.
+            Mavericks giúp brand kết nối tín hiệu đối thủ với quyết định giá,
+            rồi nhìn trước lợi nhuận, lượng hàng cần nhập và dòng tiền trong 8 tuần.
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="/dashboard/">
@@ -148,7 +148,7 @@ export default function Home() {
       <section className="feature-section">
         <div className="section-heading split-heading">
           <div><span>PRODUCT CAPABILITIES</span><h2>Đủ sâu cho analyst.<br /><em>Đủ rõ cho decision maker.</em></h2></div>
-          <p>Mỗi lớp của sản phẩm trả lời một câu hỏi kinh doanh cụ thể, nhưng dùng chung một nguồn dữ liệu đã làm sạch.</p>
+          <p>Kết hợp mẫu đối thủ đã làm sạch với lịch sử bán hàng và economics do brand cung cấp, mỗi lớp trả lời một câu hỏi kinh doanh cụ thể.</p>
         </div>
 
         <div className="bento-grid">
@@ -212,7 +212,7 @@ export default function Home() {
         <div className="role-grid">
           <article><span>01</span><h3>Category &amp; Brand</h3><p>Nhìn nhanh ngành hàng, đối thủ và cụm SKU đang tạo áp lực.</p><a href="/dashboard/">Mở market overview →</a></article>
           <article><span>02</span><h3>Pricing &amp; Commercial</h3><p>Kiểm tra competitive target nhưng không vượt qua margin floor.</p><a href="/dashboard/">Chạy pricing scenario →</a></article>
-          <article><span>03</span><h3>Data &amp; Analytics</h3><p>Review match evidence, quality flags và toàn bộ giả định mô hình.</p><a href="/dashboard/">Kiểm tra trust layer →</a></article>
+          <article><span>03</span><h3>Inventory &amp; Finance</h3><p>Nhập lịch sử bán hàng, so sánh phương án giá và dự báo vốn nhập hàng trong 8 tuần.</p><a href="/dashboard/#planning">Mở Profit &amp; Capital Studio →</a></article>
         </div>
       </section>
 
@@ -221,7 +221,8 @@ export default function Home() {
         <div className="faq-list">
           <details open><summary>Mavericks khác một dashboard BI thông thường ở đâu?<span>+</span></summary><p>Dashboard BI dừng ở &quot;điều gì đã xảy ra&quot;. Mavericks nối tín hiệu với matching, rồi đưa tín hiệu đó vào pricing guardrail để trả lời &quot;nên làm gì tiếp theo và vì sao&quot;.</p></details>
           <details><summary>Kết quả matching có phải AI quyết định hoàn toàn?<span>+</span></summary><p>Không. MVP chấm điểm dựa trên taxonomy, tên, từ khóa và pack/size. Mọi cặp đều cần Category Manager duyệt; dưới 75% được route sang review tăng cường thay vì giả lập kết quả LLM.</p></details>
-          <details><summary>MVP có phụ thuộc vào dữ liệu mẫu gán cứng không?<span>+</span></summary><p>Không. Dữ liệu sản phẩm được xuất thành snapshot sạch từ PostgreSQL. Search, filter, match và pricing đều tính toán trên snapshot theo lựa chọn của người dùng.</p></details>
+          <details><summary>Dữ liệu đối thủ và dữ liệu bán hàng đến từ đâu?<span>+</span></summary><p>Dữ liệu đối thủ là snapshot từ PostgreSQL, có ngày cập nhật và phạm vi theo dõi. Profit &amp; Capital Studio dùng CSV bán hàng riêng do brand nhập. Bạn cũng có thể thử bằng dữ liệu minh họa được ghi nhãn rõ; chi phí, tồn kho và vốn đều có thể chỉnh.</p></details>
+          <details><summary>AI đã tự tối ưu giá và đặt hàng chưa?<span>+</span></summary><p>Phiên bản hiện tại tạo baseline nhu cầu từ lịch sử và so sánh giá dựa trên độ nhạy do người dùng nhập. Kết quả có guardrail và cần CM duyệt; hệ thống chưa tự đổi giá, đặt hàng hoặc chuyển tiền. Dự báo và lợi nhuận cần được đối chiếu với kết quả pilot thực tế.</p></details>
           <details><summary>Hệ thống có tự động giảm giá theo đối thủ không?<span>+</span></summary><p>Không. Nếu mức giá cần để undercut thấp hơn margin floor, Mavericks khuyến nghị bảo vệ biên và chuyển sang bundle, voucher có điều kiện, rating hoặc giao hàng.</p></details>
         </div>
       </section>

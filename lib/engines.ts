@@ -121,15 +121,16 @@ export function rankSnapshotMatches(products: Product[], options: { country: Cou
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 export function simulatePricingLocally(input: PricingInput): PricingResult {
+  if (Object.values(input).some((value) => typeof value === 'number' && !Number.isFinite(value))) throw new Error('Các giá trị economics phải là số hữu hạn.');
   const ourPrice = Math.max(0, Number(input.ourPrice) || 0); const competitorPrice = Math.max(0, Number(input.competitorPrice) || 0);
   const competitorChangePercent = clamp(Number(input.competitorChangePercent) || 0, -95, 500);
   const competitorVoucherPercent = clamp(Number(input.competitorVoucherPercent) || 0, 0, 80);
-  const targetMarginPercent = clamp(Number(input.targetMarginPercent) || 15, 0, 80); const cogsPercent = clamp(Number(input.cogsPercent) || 55, 0, 100);
+  const targetMarginPercent = clamp(Number(input.targetMarginPercent ?? 15), 0, 80); const cogsPercent = clamp(Number(input.cogsPercent ?? 55), 0, 100);
   const platformFeePercent = clamp(Number(input.platformFeePercent) || 0, 0, 40); const voucherPercent = clamp(Number(input.voucherPercent) || 0, 0, 40);
   const shippingPercent = clamp(Number(input.shippingPercent) || 0, 0, 30); const returnRatePercent = clamp(Number(input.returnRatePercent) || 0, 0, 30);
   const adsSpendPercent = clamp(Number(input.adsSpendPercent) || 0, 0, 40); const campaignSpendPercent = clamp(Number(input.campaignSpendPercent) || 0, 0, 40);
   const packagingCost = Math.max(0, Number(input.packagingCost) || 0); const undercutPercent = clamp(Number(input.undercutPercent) || 0, 0, 20);
-  const gapThresholdPercent = clamp(Number(input.gapThresholdPercent) || 12, 0, 50); const skuRole = input.skuRole || 'core';
+  const gapThresholdPercent = clamp(Number(input.gapThresholdPercent ?? 12), 0, 50); const skuRole = input.skuRole || 'core';
   const commercialRate = (platformFeePercent + voucherPercent + shippingPercent + returnRatePercent + adsSpendPercent + campaignSpendPercent) / 100;
   const deductionRate = commercialRate + targetMarginPercent / 100;
   const unitCost = ourPrice * cogsPercent / 100;
@@ -140,7 +141,7 @@ export function simulatePricingLocally(input: PricingInput): PricingResult {
   const ourEffective = ourPrice * (1 - voucherPercent / 100);
   const marginFloor = (unitCost + packagingCost) / (1 - deductionRate);
   const roleAdjustment = skuRole === 'traffic' ? -undercutPercent : skuRole === 'margin' ? 5 : 0;
-  const competitiveTarget = competitorEffective * (1 + roleAdjustment / 100);
+  const competitiveTarget = competitorEffective * (1 + roleAdjustment / 100) / (1 - voucherPercent / 100);
   const currentMarginPercent = ((ourPrice * (1 - commercialRate) - unitCost - packagingCost) / ourPrice) * 100;
   const currentPriceGapPercent = ((ourEffective / competitorEffective - 1) * 100);
   const alreadyCompetitive = ourEffective <= competitorEffective;

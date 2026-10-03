@@ -3,8 +3,8 @@ import './globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.URL || 'http://localhost:3000'),
-  title: 'Mavericks Decision Support for Vietnam Commerce',
-  description: 'Từ tín hiệu giá đến SKU đã xác nhận và quyết định thương mại có guardrail cho Category Manager.',
+  title: 'Mavericks — Profit & Market Intelligence',
+  description: 'Kết nối tín hiệu cạnh tranh với quyết định giá, lợi nhuận, tồn kho và kế hoạch vốn của brand.',
   openGraph: {
     title: 'Mavericks — Thấy tín hiệu. Chọn đúng SKU.',
     description: 'MVP biến mẫu đối thủ Việt Nam thành luồng detect, match, guardrail và recommend có human approval.',

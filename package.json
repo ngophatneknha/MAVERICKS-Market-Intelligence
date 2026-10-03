@@ -7,9 +7,10 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:netlify": "next build",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .next-netlify --ignore-pattern out"
+    "build": "next build --webpack",
+    "build:netlify": "next build --webpack",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .next-netlify --ignore-pattern out",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs"
   },
   "dependencies": {
     "@radix-ui/react-tooltip": "^1.2.16",
