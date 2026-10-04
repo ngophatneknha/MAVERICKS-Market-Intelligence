@@ -4,12 +4,14 @@
 
 ## Cấu trúc trải nghiệm
 
-- `/` — website giới thiệu sản phẩm dành cho mentor và decision maker.
-- `/about/` — trang giới thiệu riêng với nhận diện đen–trắng–cam, chuyển động và bản demo sản phẩm; không thay thế app.
+- `/` — trang giới thiệu sản phẩm mới, nhận diện đen–trắng–cam, chuyển động và bản demo; thay thế landing page cũ trên cùng domain.
+- `/about/` — đường dẫn trực tiếp tới cùng trang giới thiệu, giữ tương thích với các liên kết đã chia sẻ.
 - `/dashboard/` — Intelligence Control Room tương tác đầy đủ.
 - `/dashboard/#planning` — Profit & Capital Studio: nhập bán hàng CSV, so sánh giá và lập kế hoạch vốn 8 tuần.
 
 Các CTA trên landing page dẫn thẳng tới dashboard cùng domain, không phụ thuộc website hoặc runtime bên ngoài.
+
+Chỉ có một phiên bản trang giới thiệu dùng chung cho `/` và `/about/`. Logo trong dashboard trở về trang chủ mới; app và dữ liệu trình duyệt vẫn giữ nguyên. Deploy bản này lên site Netlify hiện có sẽ thay giao diện cũ, không cần xóa site hoặc đổi domain.
 
 ## Nội dung chính
 

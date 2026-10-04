@@ -189,7 +189,7 @@ export default function MarketIntelligenceApp() {
 
   return <TooltipProvider delayDuration={200}>
     <div className="mi-app">
-      <aside className={`mi-sidebar ${sidebarOpen ? 'open' : ''}`}>
+      <aside id="workspace-navigation" className={`mi-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-brand">
           <Link className="brand-symbol" href="/" aria-label="Về trang giới thiệu Mavericks"><span>M</span><i /></Link>
           <div><strong>Mavericks</strong><small>Không gian làm việc của brand</small></div>
@@ -214,7 +214,7 @@ export default function MarketIntelligenceApp() {
 
       <main className="mi-main">
         <header className="mi-topbar">
-          <div className="topbar-left"><button className="mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="Mở menu"><Menu size={19} /></button><div className="breadcrumb"><span>Workspace</span><i>/</i><strong>{currentNav.label}</strong></div></div>
+          <div className="topbar-left"><button className="mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="Mở menu" aria-expanded={sidebarOpen} aria-controls="workspace-navigation"><Menu size={19} /></button><div className="breadcrumb"><span>Workspace</span><i>/</i><strong>{currentNav.label}</strong></div></div>
           <label className="command-search"><Search size={15} /><input ref={searchRef} value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter' && searchQuery.trim()) navigate('alerts'); }} placeholder="Tìm SKU hoặc gian hàng…" aria-label="Tìm SKU hoặc gian hàng"/><kbd><Command size={11} /> K</kbd></label>
           <div className="topbar-actions">
             <Tooltip><TooltipTrigger asChild><button className="icon-action" onClick={() => { api.invalidateSnapshot(country); setDataMode('loading'); setRefreshKey((value) => value + 1); }} aria-label="Làm mới dữ liệu"><RefreshCw className={dataMode === 'loading' ? 'spin' : ''} size={15} /></button></TooltipTrigger><TooltipContent>Làm mới dữ liệu</TooltipContent></Tooltip>
@@ -255,7 +255,7 @@ export default function MarketIntelligenceApp() {
 
 function NavButton({ item, active, badge, onClick }: { item: NavItem; active: boolean; badge?: number; onClick: () => void }) {
   const Icon = item.icon;
-  return <button className={`sidebar-nav-item ${active ? 'active' : ''}`} onClick={onClick}><span className="nav-icon"><Icon size={17} /></span><span><strong>{item.label}</strong><small>{item.description}</small></span>{badge !== undefined && <em>{badge}</em>}</button>;
+  return <button type="button" className={`sidebar-nav-item ${active ? 'active' : ''}`} aria-current={active ? 'page' : undefined} onClick={onClick}><span className="nav-icon"><Icon size={17} /></span><span><strong>{item.label}</strong><small>{item.description}</small></span>{badge !== undefined && <em>{badge}</em>}</button>;
 }
 
 function OverviewView({ overview, shops, segments, alerts, trend, cleanListings, maxShopVolume, evidence, onViewAlerts, onPricing, onMatch, onPlanning, onQuality }: { overview: Overview; shops: Shop[]; segments: Segment[]; alerts: Alert[]; trend: TrendPoint[]; cleanListings: number; maxShopVolume: number; evidence: { reviewed: number; approved: number; scenarios: number; catches: number; latencyMs: number | null }; onViewAlerts: () => void; onPricing: () => void; onMatch: (alert: Alert) => void; onPlanning: () => void; onQuality: () => void }) {

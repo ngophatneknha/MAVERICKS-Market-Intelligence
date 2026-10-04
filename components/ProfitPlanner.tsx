@@ -230,7 +230,7 @@ export default function ProfitPlanner({ seed }: { seed: PlanningSeed | null }) {
           </>}
         </div></div>
       </>}
-      <footer className="ps-method-note"><Info size={16} /><p>Phiên bản này dùng mô hình baseline có thể giải thích và độ nhạy giá do người dùng nhập. Lợi nhuận vận hành là lợi nhuận đóng góp trừ chi phí cố định, trước thuế và chi phí tài chính. Chưa kết nối AI học từ dữ liệu, tự đổi giá, đặt hàng hay chuyển tiền. Workspace lưu trên thiết bị; backup giúp chuyển sang máy khác.</p></footer>
+      <aside className="ps-method-note" aria-label="Cơ sở tính toán và sử dụng"><Info size={18} /><div><strong>Rõ cơ sở tính toán. Chủ động khi triển khai.</strong><p>So sánh phương án trên cùng dữ liệu bán hàng, chi phí và điều kiện của brand. Mỗi bản duyệt giữ lại đầu vào để bạn đối chiếu với kết quả thực tế.</p><details><summary>Phương pháp tính & lưu trữ</summary><p>Kế hoạch dùng mức bán tham chiếu từ lịch sử và độ nhạy giá bạn thiết lập. Lợi nhuận vận hành là lợi nhuận đóng góp trừ chi phí cố định, trước thuế và chi phí tài chính. Phê duyệt tạo hồ sơ quyết định; bạn chủ động triển khai giá và nhập hàng trên hệ thống vận hành. Workspace lưu trên trình duyệt của thiết bị này; dùng Sao lưu để chuyển máy hoặc giữ một bản dự phòng.</p></details></div></aside>
     </>}
     </>}
   </div>;

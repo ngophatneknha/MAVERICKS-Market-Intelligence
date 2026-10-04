@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './dashboard-base.css';
 import './profit-studio.css';
 import './commerce-theme.css';
+import './interaction-theme.css';
 
 export const metadata: Metadata = {
   title: 'Profit & Intelligence Workspace | Mavericks',

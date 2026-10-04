@@ -312,8 +312,15 @@ body { background:#f4f5f1; color:#29372f; font-family:'Segoe UI',Arial,sans-seri
 .ps-market-link p,.ps-market-link small { font-size:12px; }
 .ps-planning-cta { background:#f5f9ef; border-color:#dae7cc; }
 .ps-planning-cta p { color:#97ab83; }
-.ps-method-note { border-color:#e0e8d5; color:#a0b18b; }
-.ps-method-note p { font-size:11px; }
+.mi-app .ps-method-note { display:flex; align-items:flex-start; gap:12px; min-height:0; border:1px solid #d7e3da; border-radius:12px; background:#f0f6f2; color:#455e4e; padding:18px 20px; }
+.mi-app .ps-method-note > svg { color:#3a6c50; margin-top:2px; }
+.mi-app .ps-method-note > div { min-width:0; }
+.mi-app .ps-method-note strong { display:block; font-size:13px; line-height:1.6; color:#284a36; }
+.mi-app .ps-method-note p { font-size:12px; line-height:1.8; margin:5px 0 0; color:#455e4e; text-align:left; overflow-wrap:anywhere; }
+.mi-app .ps-method-note details { margin-top:10px; }
+.mi-app .ps-method-note summary { width:fit-content; padding:4px 0; font-size:12px; line-height:1.6; color:#285e4e; cursor:pointer; }
+.mi-app .ps-method-note summary:focus-visible { outline:2px solid #26815d; outline-offset:3px; border-radius:3px; }
+.mi-app .ps-method-note details[open] p { padding-top:10px; margin-top:6px; border-top:1px solid #d7e3da; }
 .ps-log article { background:#fff; border-color:#e0e8d5; border-radius:9px; }
 .ps-log h4 { color:#5f7f48; }
 .ps-log p,.ps-log small { color:#a3b38f; }

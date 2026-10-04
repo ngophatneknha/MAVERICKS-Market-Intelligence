@@ -1,0 +1,189 @@
+/* Dashboard controls only. Explicit states prevent old dark-theme colors leaking in. */
+.mi-app {
+  --control-primary: #245949;
+  --control-hover: #1b473a;
+  --control-pressed: #153a30;
+  --control-tint: #edf4f0;
+  --control-border: #cbdad1;
+  --control-text: #344d40;
+  --control-muted: #5c7064;
+  --control-ring: #26815d;
+  --control-ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+.mi-app button:focus-visible:not(.sidebar-scrim),
+.mi-app a:focus-visible {
+  outline: 2px solid var(--control-ring);
+  outline-offset: 3px;
+}
+
+.mi-app .ui-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 42px;
+  border-radius: 10px;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease,
+    box-shadow 180ms ease, transform 180ms var(--control-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.mi-app .ui-button-sm { min-height: 38px; }
+.mi-app .ui-button-icon { min-height: 40px; width: 40px; }
+.mi-app .ui-button-default {
+  color: #fff;
+  background: var(--control-primary);
+  border-color: var(--control-primary);
+  box-shadow: 0 2px 3px #163f2e12, inset 0 1px 0 #ffffff14;
+}
+.mi-app .ui-button-default::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 25%, #ffffff12 50%, transparent 75%);
+  transform: translateX(-110%);
+  transition: transform 480ms var(--control-ease);
+  pointer-events: none;
+}
+.mi-app .ui-button-outline {
+  color: var(--control-text);
+  border-color: var(--control-border);
+  background: #fff;
+  box-shadow: 0 1px 2px #163f2e05;
+}
+.mi-app .ui-button-secondary {
+  color: var(--control-primary);
+  border-color: #d8e5dd;
+  background: var(--control-tint);
+}
+.mi-app .ui-button-ghost { color: var(--control-text); background: transparent; }
+.mi-app .ui-button-ghost:hover { color: var(--control-text); background: var(--control-tint); }
+.mi-app .ui-button-destructive { color: #fff; background: #a13f35; border-color: #a13f35; }
+
+.mi-app .sidebar-nav-item {
+  min-height: 64px;
+  padding: 11px 10px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--control-text);
+  box-shadow: none;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease,
+    box-shadow 180ms ease, transform 180ms var(--control-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+/* Reset the inherited white hover text even on touch browsers with sticky hover. */
+.mi-app .sidebar-nav-item:hover { color: var(--control-text); background: var(--control-tint); }
+.mi-app .sidebar-nav-item strong { color: inherit; font-size: 13px; line-height: 1.45; }
+.mi-app .sidebar-nav-item small { color: var(--control-muted); font-size: 11px; line-height: 1.5; margin-top: 3px; }
+.mi-app .sidebar-nav-item .nav-icon { color: #526b5c; background: #f0f4f1; border-radius: 9px; }
+.mi-app .sidebar-nav-item em { color: #3d5c49; background: #e6eee8; }
+.mi-app .sidebar-nav-item.active,
+.mi-app .sidebar-nav-item.active:hover {
+  background: var(--control-primary);
+  color: #fff;
+  border-color: var(--control-primary);
+  box-shadow: 0 4px 10px #1c493617;
+}
+.mi-app .sidebar-nav-item.active::before {
+  display: block;
+  left: 0;
+  width: 3px;
+  height: 25px;
+  border-radius: 0 3px 3px 0;
+  background: #a9d8bf;
+}
+.mi-app .sidebar-nav-item.active small { color: #d8eade; }
+.mi-app .sidebar-nav-item.active .nav-icon { color: #fff; background: #ffffff16; }
+.mi-app .sidebar-nav-item.active em { color: #fff; background: #ffffff1f; }
+
+.mi-app .mobile-menu,
+.mi-app .mobile-close,
+.mi-app .icon-action,
+.mi-app .row-action {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--control-text);
+  border: 1px solid #d8e3dc;
+  border-radius: 10px;
+  background: #fff;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 180ms var(--control-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.mi-app .sidebar-brand > div:nth-child(2) { min-width: 0; }
+.mi-app .sidebar-brand small { color: #5d7364; }
+.mi-app .sidebar-brand .mobile-close { width: 34px; height: 34px; border: 0; background: #f0f4f1; }
+.mi-app .sidebar-scrim { background: #15251f66; backdrop-filter: blur(3px); }
+
+.mi-app :is(.ps-tabs button, .filter-pills button, .ps-price-button, .review-actions button,
+  .decision-flow-strip button, .showcase-price-options button, .showcase-steps button,
+  .ps-scenario-bars > button, .candidate-list > button, .agenda-next button) {
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease,
+    box-shadow 180ms ease, transform 180ms var(--control-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.mi-app .ps-tabs button { min-height: 42px; color: var(--control-muted); padding: 10px 7px; border-radius: 7px 7px 0 0; }
+.mi-app .ps-tabs button.active { color: var(--control-primary); border-bottom-color: var(--control-primary); font-weight: 700; background: #edf4f080; }
+.mi-app .filter-pills button.active { background: var(--control-tint); color: var(--control-primary); border-color: #abc7b7; }
+.mi-app .ps-price-button { background: #fff; border-color: var(--control-border); color: var(--control-text); }
+.mi-app .ps-price-button[aria-pressed=true] { background: var(--control-primary); border-color: var(--control-primary); color: #fff; }
+.mi-app .ps-price-button span { color: var(--control-primary); background: #e3efe8; }
+.mi-app .ps-price-button[aria-pressed=true] span { color: #fff; background: #ffffff24; }
+.mi-app .review-actions button { color: var(--control-text); border-color: var(--control-border); }
+.mi-app .review-actions button.approve { background: #eaf4ee; color: #21553b; border-color: #adcbb9; }
+.mi-app .review-actions button.reject { background: #fcf0ed; color: #913e32; border-color: #e4b7af; }
+.mi-app .ps-scenario-bars > button.selected { background: #edf5ef; border-color: #a4c5b0; box-shadow: inset 3px 0 var(--control-primary); }
+.mi-app .ps-scenario-bars > button.selected:hover { background: #e8f2ec; }
+
+@media (hover: hover) and (pointer: fine) {
+  .mi-app .ui-button:not(:disabled):hover { transform: translateY(-1px); }
+  .mi-app .ui-button-default:not(:disabled):hover { background: var(--control-hover); border-color: var(--control-hover); color: #fff; box-shadow: 0 5px 12px #163f2e26; }
+  .mi-app .ui-button-default:not(:disabled):hover::before { transform: translateX(110%); }
+  .mi-app .ui-button-outline:not(:disabled):hover { background: #f1f6f3; border-color: #8faa98; color: #244e36; }
+  .mi-app .ui-button-secondary:not(:disabled):hover { background: #dfebe3; border-color: #b9d0c1; }
+  .mi-app .ui-button-ghost:not(:disabled):hover { background: var(--control-tint); color: #214e38; }
+  .mi-app .ui-button-destructive:not(:disabled):hover { background: #86342c; border-color: #86342c; }
+  .mi-app .sidebar-nav-item:not(.active):hover { border-color: #d2e2d7; background: #edf4f0; color: #234d36; }
+  .mi-app :is(.mobile-menu, .mobile-close, .icon-action, .row-action):not(:disabled):hover { background: var(--control-tint); border-color: #a8c1b1; }
+  .mi-app .ps-tabs button:not(.active):hover { color: var(--control-primary); background: #f2f6f3; }
+  .mi-app .ps-price-button:not([aria-pressed=true]):hover { background: var(--control-tint); border-color: #a8c1b1; }
+  .mi-app .review-actions button:not(:disabled):hover { box-shadow: 0 3px 8px #173c2c12; transform: translateY(-1px); }
+}
+
+.mi-app :is(.ui-button, .sidebar-nav-item, .mobile-menu, .mobile-close, .icon-action,
+  .row-action, .ps-price-button, .review-actions button):not(:disabled):active {
+  transform: translateY(1px) scale(.985);
+  box-shadow: none;
+  transition-duration: 80ms;
+}
+.mi-app .ui-button-default:not(:disabled):active { background: var(--control-pressed); border-color: var(--control-pressed); }
+.mi-app .sidebar-nav-item.active:active { background: var(--control-pressed); }
+.mi-app .ui-button:disabled,
+.mi-app .ui-button:disabled:hover {
+  opacity: 1;
+  cursor: not-allowed;
+  color: #63746a;
+  background: #eaf0ec;
+  border-color: #d9e3dc;
+  box-shadow: none;
+  transform: none;
+}
+.mi-app .ui-button:disabled::before { display: none; }
+.mi-app .ui-button[aria-busy=true],
+.mi-app .ui-button[aria-busy=true]:disabled:hover { cursor: progress; }
+
+@media (pointer: coarse) {
+  .mi-app .ui-button,
+  .mi-app :is(.mobile-menu, .mobile-close, .icon-action, .row-action, .ps-tabs button,
+    .filter-pills button, .ps-price-button, .review-actions button, .showcase-steps button,
+    .showcase-price-options button, .decision-flow-strip button) { min-height: 44px; }
+  .mi-app :is(.mobile-menu, .mobile-close, .icon-action, .row-action) { min-width: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mi-app button, .mi-app button::before, .mi-app .mi-sidebar { transition: none !important; }
+  .mi-app .ui-button::before { display: none; }
+  .mi-app button:active,
+  .mi-app button:hover { transform: none !important; }
+}

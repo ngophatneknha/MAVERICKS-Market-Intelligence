@@ -6,8 +6,8 @@ import './introduction.css';
 import './kinetic.css';
 
 export const metadata: Metadata = {
-  title: 'Giới thiệu dự án | Mavericks',
-  description: 'Mavericks kết nối biến động đối thủ với lợi nhuận và nhu cầu vốn của brand. Khám phá dự án và trải nghiệm demo Market Intelligence.',
+  title: 'Market Intelligence cho thương hiệu | Mavericks',
+  description: 'Từ tín hiệu đối thủ đến quyết định giá, lợi nhuận và vốn. Khám phá Mavericks — workspace giúp thương hiệu thương mại điện tử chủ động trong từng phương án kinh doanh.',
 };
 
 export default function IntroductionPage() {
