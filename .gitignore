@@ -15,6 +15,9 @@
 /.next/
 /.next-netlify/
 /out/
+/.next-before-finance-20261005/
+/out-before-finance-20261005/
+*.tsbuildinfo
 
 # misc
 .DS_Store

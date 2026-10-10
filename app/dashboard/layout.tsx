@@ -3,6 +3,7 @@ import './dashboard-base.css';
 import './profit-studio.css';
 import './commerce-theme.css';
 import './interaction-theme.css';
+import './finance-desk.css';
 
 export const metadata: Metadata = {
   title: 'Profit & Intelligence Workspace | Mavericks',

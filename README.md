@@ -8,6 +8,28 @@
 - `/about/` — đường dẫn trực tiếp tới cùng trang giới thiệu, giữ tương thích với các liên kết đã chia sẻ.
 - `/dashboard/` — Intelligence Control Room tương tác đầy đủ.
 - `/dashboard/#planning` — Profit & Capital Studio: nhập bán hàng CSV, so sánh giá và lập kế hoạch vốn 8 tuần.
+- `/dashboard/#cashflow` — Financial Desk: số dư có ngày đối chiếu, sổ thu–chi và dự báo dòng tiền 30/60/90 ngày.
+
+## Financial Assistant cho SMEs
+
+Dashboard có nút **VI / EN**; ngôn ngữ được lưu trên trình duyệt. Nhãn, hướng dẫn và định dạng số đổi theo ngôn ngữ, còn tên sản phẩm, nguồn dữ liệu và ghi chú do người dùng nhập được giữ nguyên. Trang giới thiệu chưa nằm trong phạm vi chuyển ngôn ngữ này.
+
+Trong **Dòng tiền**:
+
+1. Nhập tổng tiền thực có **đầu ngày** tại ngày đối chiếu và mức dự phòng cần giữ. Đây là số dư do người dùng nhập, không phải ngân hàng kết nối trực tiếp.
+2. Thêm khoản thu–chi với số tiền, ngày dự kiến và trạng thái. Khi đã thanh toán, cập nhật ngày thực thu/chi; không tự cộng lại khoản đó vào số dư đầu kỳ.
+3. Chọn dự báo 30/60/90 ngày, thử thu chậm 7/14 ngày. Khoản chi quá hạn được xếp vào ngày đầu dự báo; khoản thu quá hạn chưa chắc thu được nên được loại trừ cho đến khi cập nhật ngày hoặc xác nhận đã thu.
+4. Thử một đơn nhập hàng, hoặc lấy tiền nhập từ bản duyệt trong Kế hoạch & vốn. Xác nhận ngày trả nhà cung cấp. Doanh thu không tự chuyển thành tiền mặt; chỉ thêm khoản tiền thực dự kiến về chưa có trong sổ. Chọn khoản chi được thay thế nếu đơn này đã có trong sổ để không tính hai lần.
+5. Xem đáy tiền **trước khoản thu cùng ngày**, vốn để duy trì dự phòng, bảng tiền từng ngày; tải CSV hoặc sao lưu/khôi phục JSON. Mô phỏng chưa tạo khoản phải trả và chưa đặt hàng.
+
+Dữ liệu mới ban đầu trống; **Xem ví dụ** là bộ số liệu tổng hợp minh họa, được đánh dấu riêng. Workspace lưu localStorage trên thiết bị này, chưa đồng bộ đa người dùng. Hãy sao lưu trước khi thay dữ liệu hoặc chuyển máy.
+
+Nút **Trợ lý tài chính** có hai chế độ:
+
+- **Giải thích số liệu**: giải thích theo công thức và số liệu sổ tiền ngay trên thiết bị, không giả danh mô hình AI.
+- **Hỏi AI · pilot**: gọi OpenAI từ Netlify Function, cần cấu hình máy chủ, mã truy cập pilot và sự đồng ý gửi câu hỏi/lịch sử ngắn/số liệu tổng hợp. Khóa API không được đưa vào frontend. Trợ lý chỉ giải thích, không đổi giá, đặt hàng hoặc chuyển tiền.
+
+Xem [hướng dẫn cấu hình AI trên Netlify](docs/AI_ASSISTANT_SETUP.md). `npm run dev` hoặc preview tĩnh chỉ chạy frontend; không tự chạy Netlify Function. AI tắt mặc định và UI hiển thị trạng thái chưa cấu hình thay vì trả lời giả. Chưa có yêu cầu OpenAI tính phí nào được thực hiện trong quá trình kiểm thử.
 
 Các CTA trên landing page dẫn thẳng tới dashboard cùng domain, không phụ thuộc website hoặc runtime bên ngoài.
 
